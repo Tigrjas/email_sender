@@ -7,29 +7,25 @@ import os
 # Define email sender and receiver
 dotenv.load_dotenv()
 
-email_sender = os.getenv("REPLACE with email address")
-email_password = os.getenv("REPLACE with password")
-email_receiver = 'REPLACE with receivers email'
+email_sender = os.getenv("REPLACE")
+email_password = os.getenv("REPLACE")
+email_receiver = os.getenv("REPLACE")
 
 # Set the subject and body of the email
-subject = 'Enter Subject Text Here'
-body = """
-Enter Body Text here
-"""
 email = {
-    'subject': "REPLACE subject here",
+    'subject': "REPLACE",
     'body': """
-    REPLACE Body here
+    REPLACE
     """,
 }
 
 
-def send_email(sender: str, receiver: str, password: str, email: dict) -> None:
+def send_email(sender: str, password: str, receiver: str, email: dict) -> None:
     message = EmailMessage()
     message['From'] = sender
     message['To'] = receiver
-    message['Subject'] = subject
-    message.set_content(body)
+    message['Subject'] = email['subject']
+    message.set_content(email['body'])
 
     # Add SSL (layer of security)
     context = ssl.create_default_context()
@@ -44,4 +40,4 @@ def send_email(sender: str, receiver: str, password: str, email: dict) -> None:
 
 
 if __name__ == "__main__":
-    send_email(email_sender, email_receiver, password)
+    send_email(email_sender, email_password, email_receiver, email)
