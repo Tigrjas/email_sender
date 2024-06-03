@@ -3,19 +3,20 @@ import ssl
 from email.message import EmailMessage
 import dotenv
 import os
+import sys
 
 # Define email sender and receiver
 dotenv.load_dotenv()
 
-email_sender = os.getenv("REPLACE")
-email_password = os.getenv("REPLACE")
-email_receiver = os.getenv("REPLACE")
+email_sender = os.getenv("email_sender")
+email_password = os.getenv("password")
+email_receiver = os.getenv("email_receiver")
 
 # Set the subject and body of the email
 email = {
-    'subject': "REPLACE",
+    'subject': "subject line",
     'body': """
-    REPLACE
+    body text
     """,
 }
 
@@ -40,4 +41,24 @@ def send_email(sender: str, password: str, receiver: str, email: dict) -> None:
 
 
 if __name__ == "__main__":
-    send_email(email_sender, email_password, email_receiver, email)
+    if len(sys.argv) < 1:
+        send_email(email_sender, email_password, email_receiver, email)
+    elif len(sys.argv) == 4:
+        email_receiver = sys.argv[1]
+        subject = sys.argv[2]
+        body = sys.argv[3]
+        email = {
+            'subject': subject,
+            'body': body
+        }
+        send_email(email_sender, email_password, email_receiver, email)
+    else:
+        print("""
+        To use command line feature there must be 3 arguments following the script:
+            1. email receiver
+            2. subject line
+            3. body
+
+        Example command:
+        python email_receiver.py john@gmail.com Greetings "It was nice to meet you"
+        """)
